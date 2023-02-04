@@ -1,10 +1,14 @@
-import { View, Platform, StyleSheet } from "react-native";
+import { View, Platform, StyleSheet, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import Constants from "expo-constants";
 import ExchangeInfoScreen from "./ExchangeInfoScreen";
 import ExchangeListScreen from "./ExchangeListScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import ContactScreen from "./ContactScreen";
 
@@ -65,7 +69,7 @@ const ExchangeListNavigator = () => {
           title: "ExchangeList",
           headerLeft: () => {
             <Icon
-              name="money-bill-transfer"
+              name="money"
               type="font-awesome"
               iconStyle={StyleSheet.stackIcon}
               onPress={() => navigation.toggleDrawer()}
@@ -77,12 +81,23 @@ const ExchangeListNavigator = () => {
         name="ExchangeInfo"
         component={ExchangeInfoScreen}
         options={(route) => ({
-          title: route.params.exchange.name,
+          title: route.params.exchangename,
         })}
       />
     </Stack.Navigator>
   );
 };
+
+const CustomDrawerContent = (props) => (
+  <DrawerContentScrollView {...props}>
+    <View style={styles.drawerHeader}>
+      <View style={{ flex: 2 }}>
+        <Text style={styles.drawerHeader}>XchangeFinder</Text>
+      </View>
+    </View>
+    <DrawerItemList {...props} labelStyle={{ fontWeight: "bold" }} />
+  </DrawerContentScrollView>
+);
 
 const Main = () => {
   return (
@@ -94,6 +109,7 @@ const Main = () => {
     >
       <Drawer.Navigator
         intitialRouteName="Home"
+        drawerContent={CustomDrawerContent}
         drawerStyle={{ backgroundColor: "#88d0b0" }}
       >
         <Drawer.Screen
@@ -119,7 +135,7 @@ const Main = () => {
             title: "Exchange List",
             drawerIcon: ({ color }) => (
               <Icon
-                name="money-bill-transfer"
+                name="money"
                 type="font-awesome"
                 size={24}
                 iconStyle={{ width: 24 }}
@@ -150,6 +166,19 @@ const Main = () => {
 };
 
 const styles = StyleSheet.create({
+  drawerHeader: {
+    backgroundColor: "#136136",
+    height: 140,
+    alignItem: "center",
+    justifyContent: "center",
+    flex: 1,
+    flexDirection: "row",
+  },
+  drawerHeaderText: {
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
   stackIcon: {
     marginLeft: 10,
     color: "#fff",

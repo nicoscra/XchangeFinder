@@ -42,7 +42,6 @@ export const EXCHANGES = [
     sellRate: 18.63,
     currencies: ["USD", "MXP"],
     services: ["Currency Exchange"],
-    image: require("../assests/CentroCambiaroLaMision.png"),
     featured: false,
   },
 ];
