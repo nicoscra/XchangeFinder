@@ -1,17 +1,17 @@
-import { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import RenderExchange from "../features/exchanges/RenderExchange";
-import { EXCHANGES } from "../shared/exchanges";
+import { toggleFavorite } from "../favorites/favoritesSlice";
 
 const ExchangeInfoScreen = ({ route }) => {
   const { exchange } = route.params;
-
-  const [exchanges, setExchanges] = useState(EXCHANGES);
-  const [favorite, setFavorite] = useState(false);
+  const exchanges = useSelector((state) => state.exchanges);
+  const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
 
   const renderExchangeItem = ({ item }) => {
     return (
-      <View style={StyleSheet.exchangeitem}>
+      <View style={StyleSheet.exchangeItem}>
         <Text style={{ fontSize: 14 }}>{item.text}</Text>
         <Text style={{ fontSize: 12 }}>{item.rating} Stars</Text>
         <Text style={{ fontSize: 12 }}>
@@ -23,7 +23,7 @@ const ExchangeInfoScreen = ({ route }) => {
 
   return (
     <FlatList
-      data={exchanges.filter(
+      data={exchanges.exchangesArray.filter(
         (exchange) => exchange.buyRate.exchangeID === exchange.id
       )}
       renderItem={renderExchangeItem}
@@ -36,10 +36,9 @@ const ExchangeInfoScreen = ({ route }) => {
         <>
           <RenderExchange
             exchange={exchange}
-            isFavorite={favorite}
-            markFavorite={() => setFavorite(true)}
+            isFavorite={favorites.includes(favorites.id)}
+            markFavorite={() => dispatch(toggleFavorite(exchange.id))}
           />
-          <Text style={StyleSheet.exchangesTitle}>Exchanges</Text>
         </>
       }
     />

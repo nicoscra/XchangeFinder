@@ -1,12 +1,13 @@
 import { Text, View, StyleSheet } from "react-native";
 import { Card, Icon } from "react-native-elements";
+import { baseUrl } from "../../shared/baseUrl";
 
 const RenderExchange = (props) => {
   const { exchange } = props;
   if (exchange) {
     return (
       <Card containerStyle={StyleSheet.cardContainer}>
-        <Card.Image source={exchange.image}>
+        <Card.Image source={{ uri: baseUrl + exchange.image }}>
           <View style={{ justifyContent: "center", flex: 1 }}>
             <Text
               style={{
@@ -19,12 +20,16 @@ const RenderExchange = (props) => {
             </Text>
           </View>
         </Card.Image>
-        <Text style={{ margin: 20 }}>Buy {exchange.buyRate}</Text>
-        <Text style={{ margin: 20 }}>Sell {exchange.sellRate}</Text>
+        <Text style={{ margin: 20, flexDirection: "row" }}>
+          Buy:{exchange.buyRate}
+        </Text>
+        <Text style={{ margin: 20, flexDirection: "row" }}>
+          Sell: {exchange.sellRate}
+        </Text>
         <Icon
-          name={props.isFavorite ? "hear" : "heart-o"}
+          name={props.isFavorite ? "heart" : "heart-o"}
           type="font-awesome"
-          color="#fff"
+          color="#136136"
           raised
           reverse
           onPress={() =>

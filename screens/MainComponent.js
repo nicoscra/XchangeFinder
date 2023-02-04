@@ -11,6 +11,12 @@ import {
 } from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import ContactScreen from "./ContactScreen";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchPartners } from "../features/partners/partnersSlice";
+import { fetchExchanges } from "../features/exchanges/exchangesSlice";
+import { fetchPromotions } from "../features/promotions/promotionsSlice";
+import { fetchComments } from "../features/comments/commentsSlice";
 
 const Drawer = createDrawerNavigator();
 
@@ -63,10 +69,10 @@ const ExchangeListNavigator = () => {
       screenOptions={screenOptions}
     >
       <Stack.Screen
-        name="Exchange List"
+        name="ExchangeList"
         component={ExchangeListScreen}
         options={({ navigation }) => ({
-          title: "ExchangeList",
+          title: "Exchange List",
           headerLeft: () => {
             <Icon
               name="money"
@@ -80,8 +86,8 @@ const ExchangeListNavigator = () => {
       <Stack.Screen
         name="ExchangeInfo"
         component={ExchangeInfoScreen}
-        options={(route) => ({
-          title: route.params.exchangename,
+        options={({ route }) => ({
+          title: route.params.exchange.name,
         })}
       />
     </Stack.Navigator>
@@ -100,6 +106,15 @@ const CustomDrawerContent = (props) => (
 );
 
 const Main = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchExchanges());
+    dispatch(fetchPromotions());
+    dispatch(fetchPartners());
+    dispatch(fetchComments());
+  }, [dispatch]);
+
   return (
     <View
       style={{
@@ -129,7 +144,7 @@ const Main = () => {
           }}
         />
         <Drawer.Screen
-          name="ExchangeList"
+          name="Exchange List"
           component={ExchangeListNavigator}
           options={{
             title: "Exchange List",
@@ -167,12 +182,15 @@ const Main = () => {
 
 const styles = StyleSheet.create({
   drawerHeader: {
+    color: "white",
     backgroundColor: "#136136",
     height: 140,
     alignItem: "center",
     justifyContent: "center",
     flex: 1,
     flexDirection: "row",
+    fontSize: 40,
+    fontWeight: "bold",
   },
   drawerHeaderText: {
     color: "#fff",
